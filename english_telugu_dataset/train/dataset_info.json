@@ -1,0 +1,53 @@
+{
+  "builder_name": "parquet",
+  "citation": "",
+  "config_name": "default",
+  "dataset_name": "english_to_telugu_bilingual_sentence_pairs",
+  "dataset_size": 70268460,
+  "description": "",
+  "download_size": 20324770,
+  "features": {
+    "Input": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "Output": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "Instruction": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "Conversation": {
+      "feature": {
+        "content": {
+          "dtype": "string",
+          "_type": "Value"
+        },
+        "role": {
+          "dtype": "string",
+          "_type": "Value"
+        }
+      },
+      "_type": "List"
+    }
+  },
+  "homepage": "",
+  "license": "",
+  "size_in_bytes": 90593230,
+  "splits": {
+    "train": {
+      "name": "train",
+      "num_bytes": 70268460,
+      "num_examples": 155798,
+      "dataset_name": "english_to_telugu_bilingual_sentence_pairs"
+    }
+  },
+  "version": {
+    "version_str": "0.0.0",
+    "major": 0,
+    "minor": 0,
+    "patch": 0
+  }
+}
