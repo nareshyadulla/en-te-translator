@@ -11,6 +11,9 @@ import os
 
 DEVICE = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
 
+MODEL_DIR = os.path.join("models", "v1")
+TOKENIZER_PREFIX = "en_te"
+
 
 class TranslationDataset(Dataset):
     def __init__(self, dataset, tokenizer, max_length=64):
@@ -51,8 +54,15 @@ class TranslationDataset(Dataset):
         )
 
 
-def prepare_tokenizer(dataset_path, tokenizer_prefix="en_te", vocab_size=16000):
-    if os.path.exists(f"{tokenizer_prefix}.model"):
+def prepare_tokenizer(
+    dataset_path,
+    model_dir=MODEL_DIR,
+    tokenizer_prefix=TOKENIZER_PREFIX,
+    vocab_size=16000,
+):
+    os.makedirs(model_dir, exist_ok=True)
+    model_path = os.path.join(model_dir, f"{tokenizer_prefix}.model")
+    if os.path.exists(model_path):
         print("Tokenizer already exists.")
         return
 
@@ -71,7 +81,7 @@ def prepare_tokenizer(dataset_path, tokenizer_prefix="en_te", vocab_size=16000):
 
     spm.SentencePieceTrainer.train(
         input=combined_file,
-        model_prefix=tokenizer_prefix,
+        model_prefix=os.path.join(model_dir, tokenizer_prefix),
         vocab_size=vocab_size,
         pad_id=0,
         bos_id=1,
@@ -124,9 +134,12 @@ def main():
     print(dataset[0])
 
     # Train tokenizer
+    os.makedirs(MODEL_DIR, exist_ok=True)
     prepare_tokenizer(dataset_path)
 
-    tokenizer = spm.SentencePieceProcessor(model_file="en_te.model")
+    tokenizer = spm.SentencePieceProcessor(
+        model_file=os.path.join(MODEL_DIR, f"{TOKENIZER_PREFIX}.model")
+    )
 
     vocab_size = tokenizer.get_piece_size()
 
@@ -218,7 +231,8 @@ def main():
 
         print(f"Epoch {epoch+1}/{epochs} Average Loss: {avg_loss:.4f}")
 
-        torch.save(model.state_dict(), "en_te_transformer.pth")
+        checkpoint_path = os.path.join(MODEL_DIR, f"{TOKENIZER_PREFIX}_transformer.pth")
+        torch.save(model.state_dict(), checkpoint_path)
 
     print("Training Complete.")
 

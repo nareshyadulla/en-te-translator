@@ -1,3 +1,5 @@
+import os
+
 import torch
 import sentencepiece as spm
 
@@ -5,6 +7,9 @@ from transformer import Transformer
 
 
 DEVICE = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
+
+MODEL_DIR = os.path.join("models", "v1")
+TOKENIZER_PREFIX = "en_te"
 
 
 def greedy_decode(model, tokenizer, sentence, max_length=64):
@@ -53,7 +58,7 @@ def greedy_decode(model, tokenizer, sentence, max_length=64):
 
 def load_model():
     tokenizer = spm.SentencePieceProcessor(
-        model_file="en_te.model"
+        model_file=os.path.join(MODEL_DIR, f"{TOKENIZER_PREFIX}.model")
     )
 
     vocab_size = tokenizer.get_piece_size()
@@ -78,9 +83,10 @@ def load_model():
     #     dropout=0.1
     # ).to(DEVICE)
 
+    checkpoint_path = os.path.join(MODEL_DIR, f"{TOKENIZER_PREFIX}_transformer.pth")
     model.load_state_dict(
         torch.load(
-            "en_te_transformer.pth",
+            checkpoint_path,
             map_location=DEVICE
         )
     )

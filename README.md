@@ -15,7 +15,7 @@ The pipeline:
 5. **Inference** — Greedy autoregressive decoding via `test.py`.
 
 ```
-english_telugu_dataset/  →  SentencePiece  →  Transformer  →  en_te_transformer.pth
+english_telugu_dataset/  →  SentencePiece  →  Transformer  →  models/v1/
                                                       ↓
                                               greedy decode (test.py)
 ```
@@ -96,7 +96,48 @@ python test.py
 
 ## Output
 
+### Artifacts
+
 | Artifact | Description |
 |----------|-------------|
-| `en_te_transformer.pth` | Model weights |
-| `en_te.model` / `en_te.vocab` | SentencePiece tokenizer |
+| `models/v1/en_te_transformer.pth` | Model weights |
+| `models/v1/en_te.model` / `en_te.vocab` | SentencePiece tokenizer |
+
+### Sample translations (`python test.py`)
+
+```text
+==============================
+ English → Telugu Translation 
+==============================
+
+English : How are you?
+Telugu  : మీరు ఎలా ఉన్నారు?
+--------------------------------------------------
+English : I am learning transformers.
+Telugu  : నేను  ⁇ స్స్స్థుతుతను.
+--------------------------------------------------
+English : The weather is very good today.
+Telugu  : ఈ రోజు వాతావరణం చాలా బాగుంది.
+--------------------------------------------------
+English : My name is Naresh.
+Telugu  : నా పేరు సుతుకుడు.
+--------------------------------------------------
+English : I love machine learning.
+Telugu  : నాకు యంత్రం నేర్చుకోవడం చాలా ఇష్టం.
+--------------------------------------------------
+English : Can you help me?
+Telugu  : మీరు నాకు సహాయం చేయగలరా?
+--------------------------------------------------
+English : This is a beautiful place.
+Telugu  : ఇది అందమైన ప్రదేశం.
+--------------------------------------------------
+English : We are going to school.
+Telugu  : మేము పాఠశాలకు వెళ్తున్నాము.
+--------------------------------------------------
+English : She is reading a book.
+Telugu  : ఆమె ఒక పుస్తకం చదవడం.
+--------------------------------------------------
+English : The food tastes delicious.
+Telugu  : ఆహారం రుచిగా ఉంటుంది.
+--------------------------------------------------
+```
